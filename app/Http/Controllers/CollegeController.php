@@ -10,37 +10,6 @@ class CollegeController extends Controller
     {
         $lastFiveYears = collect(range(date('Y') - 4, date('Y')));
 
-<<<<<<< HEAD
-        $colleges = College::with('programs')->get();
-
-        $colleges = $colleges->each(function ($college) {
-            $college->programs->each(function ($program) {
-                $program->applicationsPerYear = $program->applications()
-                    ->where('acad_year', '>=', date('Y') - 4)
-                    ->selectRaw('acad_year, count(*) as count')
-                    ->groupBy('acad_year')
-                    ->get();
-            });
-        })->map(function ($college) use ($lastFiveYears) {
-            return [
-                'college' => $college->college_name,
-                'programs' => $college->programs->map(function ($program) use ($lastFiveYears) {
-                    return [
-                        'program' => $program->program_name,
-                        'applicationsPerYear' => $lastFiveYears->map(function ($year) use ($program) {
-                            $application = $program->applicationsPerYear->firstWhere('acad_year', $year);
-                            return [
-                                'year' => $year,
-                                'count' => $application ? $application->count : 0,
-                            ];
-                        })
-                    ];
-                }),
-            ];
-        });
-
-        return response()->json($colleges);
-=======
         $application_status = 1;
         $college_id = 1;
         $program_id = 1;
@@ -71,6 +40,6 @@ class CollegeController extends Controller
         });
 
         return response()->json($college);
->>>>>>> 91354f8 (finish applications per last 5 year)
+
     }
 }
